@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Angélica Lanches - Cardápio Online</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8fafc;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 pb-20">
+
+  <!-- HEADER / TOPO -->
+  <header class="bg-red-700 text-white sticky top-0 z-40 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      
+      <!-- LOGO -->
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center font-black text-red-700 text-xl shadow overflow-hidden border-2 border-white">
+          <img src="https://i.imgur.com/vH1mB9y.png" alt="Angélica Lanches Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+          <span class="hidden">AL</span>
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold tracking-wide uppercase leading-none text-yellow-300">Angélica</h1>
+          <span class="text-xs text-white font-semibold tracking-wider block mt-0.5">Lanches, Pizzas & Porções</span>
+        </div>
+      </div>
+
+      <!-- BOTÃO CARRINHO CANTO SUPERIOR DIREITO -->
+      <button onclick="toggleCart()" class="relative bg-yellow-400 text-red-800 hover:bg-yellow-300 font-bold px-4 py-2 rounded-full shadow transition flex items-center space-x-2">
+        <i class="fa-solid fa-cart-shopping text-lg"></i>
+        <span class="hidden sm:inline">Carrinho</span>
+        <span id="cart-badge" class="bg-red-700 text-white text-xs font-extrabold px-2 py-0.5 rounded-full">0</span>
+      </button>
+    </div>
+
+    <!-- ABAS DE NAVEGAÇÃO DE CATEGORIAS -->
+    <nav class="bg-red-800 border-t border-red-600 px-2 py-2 overflow-x-auto scrollbar-hide">
+      <div class="max-w-6xl mx-auto flex space-x-2 text-sm font-medium whitespace-nowrap">
+        <button onclick="selectCategory('promocoes')" id="tab-promocoes" class="category-tab px-4 py-1.5 rounded-full transition bg-yellow-400 text-red-900 font-bold shadow">🔥 Promoções</button>
+        <button onclick="selectCategory('combos')" id="tab-combos" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍔 Combos</button>
+        <button onclick="selectCategory('lanches_hamburguer')" id="tab-lanches_hamburguer" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍔 Hambúrgueres</button>
+        <button onclick="selectCategory('lanches_frango')" id="tab-lanches_frango" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍗 Lanches de Frango</button>
+        <button onclick="selectCategory('saladinhas')" id="tab-saladinhas" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🥬 Saladinhas</button>
+        <button onclick="selectCategory('lanches_file')" id="tab-lanches_file" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🥩 Lanches de Filé</button>
+        <button onclick="selectCategory('mini_lanches')" id="tab-mini_lanches" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍔 Mini Lanches</button>
+        <button onclick="selectCategory('pizzas')" id="tab-pizzas" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍕 Pizzas</button>
+        <button onclick="selectCategory('pizzas_doces')" id="tab-pizzas_doces" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍫 Pizzas Doces</button>
+        <button onclick="selectCategory('porcoes_quentes')" id="tab-porcoes_quentes" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🥩 Porções Quentes</button>
+        <button onclick="selectCategory('fritas')" id="tab-fritas" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍟 Fritas</button>
+        <button onclick="selectCategory('hot_dogs')" id="tab-hot_dogs" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🌭 Hot Dogs</button>
+        <button onclick="selectCategory('macarrao_chapa')" id="tab-macarrao_chapa" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🍝 Macarrão na Chapa</button>
+        <button onclick="selectCategory('adicionais')" id="tab-adicionais" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">➕ Adicionais</button>
+        <button onclick="selectCategory('bebidas')" id="tab-bebidas" class="category-tab px-4 py-1.5 rounded-full transition text-white hover:bg-red-700">🥤 Bebidas</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- CONTAINER DE PRODUTOS DECLARADOS EM HTML -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <h2 id="category-title" class="text-2xl font-extrabold text-gray-800 mb-6 border-b-2 border-yellow-400 pb-2">
+      🔥 Promoções Imbatíveis
+    </h2>
+
+    <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- PROMOÇÕES -->
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="promocoes"
+          data-id="p1"
+          data-name="Combo Fome Braba"
+          data-price="59.99">
+        <div class="relative h-48 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Combo Fome Braba" class="product-img w-full h-full object-cover" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 59,99</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base">Combo Fome Braba</h3>
+            <p class="text-xs text-gray-500 mt-1">5 Saladinhas + 1 Guaraná Poty 2 Litros</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 59,99</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="promocoes"
+          data-id="p2"
+          data-name="Combo Batata Insana"
+          data-price="49.99">
+        <div class="relative h-48 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Combo Batata Insana" class="product-img w-full h-full object-cover" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 49,99</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base">Combo Batata Insana</h3>
+            <p class="text-xs text-gray-500 mt-1">Batata Frita com Bacon e Catupiry 500g + Guaraná Antarctica 1L</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 49,99</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="promocoes"
+          data-id="p3"
+          data-name="Combo Kids"
+          data-price="29.99">
+        <div class="relative h-48 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop" alt="Combo Kids" class="product-img w-full h-full object-cover" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 29,99</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base">Combo Kids</h3>
+            <p class="text-xs text-gray-500 mt-1">1 Saladinha + Batata Frita 150g + Coca-Cola Lata 350ml</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 29,99</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+
+      <!-- COMBOS -->
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="combos"
+          data-id="c1"
+          data-name="Combo Brabo"
+          data-price="59.99">
+        <div class="relative h-48 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1610614819513-58e34989848b?w=500&auto=format&fit=crop" alt="Combo Brabo" class="product-img w-full h-full object-cover" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 59,99</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base">Combo Brabo</h3>
+            <p class="text-xs text-gray-500 mt-1">X-Tudo + 150g de Batata Frita + Coca-Cola Lata 350ml</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 59,99</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="combos"
+          data-id="c2"
+          data-name="Combo Sem Miséria"
+          data-price="118.00">
+        <div class="relative h-48 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=500&auto=format&fit=crop" alt="Combo Sem Miséria" class="product-img w-full h-full object-cover" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 118,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            <h3 class="font-bold text-gray-800 text-base">Combo Sem Miséria</h3>
+            <p class="text-xs text-gray-500 mt-1">Batata Turbo + Coca-Cola 2 Litros</p>
+          </div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 118,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+
+      <!-- CARDÁPIO ATUALIZADO -->
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh1" data-name="Tri-Tudo" data-price="60.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Tri-Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 60,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Tri-Tudo</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 3 hambúrgueres de 120g, 2 ovos, bacon, salsicha, presunto, queijo e calabresa.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 60,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh2" data-name="Tri-Salada" data-price="26.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Tri-Salada" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 26,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Tri-Salada</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 3 hambúrgueres de 120g, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 26,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh3" data-name="Tri-Egg" data-price="30.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Tri-Egg" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 30,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Tri-Egg</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 3 hambúrgueres de 120g, 2 ovos, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 30,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh4" data-name="Tri-Bacon" data-price="40.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Tri-Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 40,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Tri-Bacon</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 3 hambúrgueres de 120g, bacon, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 40,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh5" data-name="Tri-Burguer" data-price="25.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Tri-Burguer" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 25,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Tri-Burguer</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 3 hambúrgueres de 120g, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 25,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh6" data-name="X-Tudo" data-price="38.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 38,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">X-Tudo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, hambúrguer de 120g, ovo, bacon, calabresa, salsicha, presunto, queijo e alface.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 38,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh7" data-name="X-Tudo sem Calabresa" data-price="42.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Tudo sem Calabresa" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 42,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">X-Tudo sem Calabresa</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres de 120g, ovo, bacon, salsicha, alface, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 42,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh8" data-name="X-Tudo Turbo" data-price="45.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Tudo Turbo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 45,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">X-Tudo Turbo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres de 120g, ovo, bacon, 2 salsichas, alface, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 45,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh9" data-name="X-Salada" data-price="23.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Salada" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 23,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">X-Salada</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 2 hambúrgueres de 120g, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 23,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh10" data-name="X-Burguer" data-price="22.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Burguer" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 22,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">X-Burguer</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres de 120g, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 22,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh11" data-name="X-Egg" data-price="25.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Egg" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 25,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">X-Egg</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres de 120g, ovo, alface, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 25,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh12" data-name="X-Bacon" data-price="36.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 36,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">X-Bacon</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres de 120g, bacon, alface, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 36,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh13" data-name="Americano" data-price="25.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Americano" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 25,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Americano</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, 2 ovos, 3 fatias de queijo e 3 fatias de presunto.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 25,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh14" data-name="Misto Quente" data-price="26.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Misto Quente" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 26,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Misto Quente</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 4 fatias de queijo e 4 fatias de presunto.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 26,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_hamburguer" data-id="lh15" data-name="X-Calabresa" data-price="32.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="X-Calabresa" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 32,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">X-Calabresa</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres de 120g, calabresa, cebola, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 32,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_frango" data-id="lf1" data-name="Frango Tudo" data-price="45.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&auto=format&fit=crop" alt="Frango Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 45,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Tudo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, filé de frango, bacon, ovo, salsicha, presunto, queijo e calabresa.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 45,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_frango" data-id="lf2" data-name="Frango Cubano" data-price="48.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&auto=format&fit=crop" alt="Frango Cubano" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 48,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Cubano</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, filé de frango, catupiry, presunto, queijo e batata palha.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 48,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_frango" data-id="lf3" data-name="Frango Salada" data-price="42.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&auto=format&fit=crop" alt="Frango Salada" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 42,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Salada</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, filé de frango, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 42,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_frango" data-id="lf4" data-name="Frango Catupiry" data-price="46.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&auto=format&fit=crop" alt="Frango Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 46,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Catupiry</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, filé de frango, catupiry, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 46,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_frango" data-id="lf5" data-name="Frango Salada Queijo" data-price="44.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&auto=format&fit=crop" alt="Frango Salada Queijo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 44,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Salada Queijo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, filé de frango e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 44,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_frango" data-id="lf6" data-name="Frango Salada Bacon" data-price="48.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&auto=format&fit=crop" alt="Frango Salada Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 48,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Salada Bacon</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, filé de frango, presunto, queijo e bacon.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 48,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="saladinhas" data-id="sl1" data-name="Saladinha" data-price="12.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Saladinha" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 12,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Saladinha</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, hambúrguer, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 12,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="saladinhas" data-id="sl2" data-name="Saladinha Turbo" data-price="22.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Saladinha Turbo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 22,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Saladinha Turbo</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 3 hambúrgueres, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 22,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="saladinhas" data-id="sl3" data-name="Saladinha Egg" data-price="18.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Saladinha Egg" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 18,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Saladinha Egg</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, hambúrguer, presunto, queijo e ovo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 18,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="saladinhas" data-id="sl4" data-name="Saladinha Especial" data-price="19.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Saladinha Especial" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 19,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Saladinha Especial</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 2 hambúrgueres, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 19,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="saladinhas" data-id="sl5" data-name="Saladinha Bacon" data-price="20.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Saladinha Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 20,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Saladinha Bacon</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, hambúrguer, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 20,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="saladinhas" data-id="sl6" data-name="Saladinha Pop&#x27;s" data-price="24.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Saladinha Pop&#x27;s" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 24,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Saladinha Pop&#x27;s</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 3 hambúrgueres, batata palha, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 24,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_file" data-id="fl1" data-name="Filé Tudo" data-price="44.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Filé Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 44,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Filé Tudo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, contra-filé, bacon, ovo, salsicha, presunto, queijo e calabresa.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 44,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_file" data-id="fl2" data-name="Filé Salada" data-price="46.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Filé Salada" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 46,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Filé Salada</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, contra-filé, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 46,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_file" data-id="fl3" data-name="Filé Salada Queijo" data-price="44.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Filé Salada Queijo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 44,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Filé Salada Queijo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, contra-filé e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 44,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_file" data-id="fl4" data-name="Filé Salada Bacon" data-price="48.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Filé Salada Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 48,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Filé Salada Bacon</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, contra-filé, bacon, presunto e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 48,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="lanches_file" data-id="fl5" data-name="Carne e Queijo" data-price="45.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Carne e Queijo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 45,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Carne e Queijo</h3><p class="text-xs text-gray-500 mt-1">Pão francês, tomate, contra-filé e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 45,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml1" data-name="Mini X-Tudo" data-price="28.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini X-Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 28,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini X-Tudo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, hambúrguer, ovo, bacon, calabresa, salsicha, 1 fatia de presunto, 1 fatia de queijo e alface.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 28,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml2" data-name="Mini X-Egg" data-price="20.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini X-Egg" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 20,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini X-Egg</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres, ovo, 1 fatia de presunto, 1 fatia de queijo e alface.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 20,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml3" data-name="Mini Filé Tudo" data-price="36.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini Filé Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 36,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini Filé Tudo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, contra-filé, ovo, bacon, calabresa, salsicha, 1 fatia de presunto, 1 fatia de queijo e alface.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 36,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml4" data-name="Mini X-Burguer" data-price="19.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini X-Burguer" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 19,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini X-Burguer</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres, 1 fatia de presunto e 1 fatia de queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 19,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml5" data-name="Mini X-Salada" data-price="20.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini X-Salada" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 20,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini X-Salada</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 2 hambúrgueres, 1 fatia de presunto e 1 fatia de queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 20,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml6" data-name="Mini Frango Tudo" data-price="34.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini Frango Tudo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 34,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini Frango Tudo</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, filé de frango, bacon, ovo, salsicha, calabresa, 1 fatia de presunto e 1 fatia de queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 34,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml7" data-name="Mini Frango Cubano" data-price="36.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini Frango Cubano" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 36,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini Frango Cubano</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, alface, filé de frango, catupiry, 1 fatia de presunto, 1 fatia de queijo e batata.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 36,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml8" data-name="Mini X-Bacon" data-price="26.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini X-Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 26,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini X-Bacon</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate, 2 hambúrgueres, bacon, alface, 1 fatia de presunto e 1 fatia de queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 26,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="mini_lanches" data-id="ml9" data-name="Mini Misto Quente" data-price="20.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop" alt="Mini Misto Quente" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 20,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mini Misto Quente</h3><p class="text-xs text-gray-500 mt-1">Pão, tomate e 2 fatias de queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 20,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd1" data-name="Hot Dog" data-price="12.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Dog" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 12,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Dog</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 12,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd2" data-name="Hot Dog Especial" data-price="30.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Dog Especial" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 30,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Dog Especial</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, bacon, catupiry, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 30,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd3" data-name="Hot Milho e Bacon" data-price="24.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Milho e Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 24,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Milho e Bacon</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, milho, bacon, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 24,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd4" data-name="Hot Frango Cheddar" data-price="29.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Frango Cheddar" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 29,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Frango Cheddar</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, filé de frango, salsicha, cheddar, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 29,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd5" data-name="Hot Queijo" data-price="18.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Queijo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 18,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Queijo</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, 2 fatias de queijo, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 18,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd6" data-name="Hot Milho" data-price="18.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Milho" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 18,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Milho</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, milho, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 18,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd7" data-name="Hot Bacon Cheddar" data-price="29.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Bacon Cheddar" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 29,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Bacon Cheddar</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, bacon, cheddar, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 29,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd8" data-name="Hot Egg" data-price="16.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Egg" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 16,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Egg</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, ovo, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 16,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd9" data-name="Hot Presunto e Queijo" data-price="18.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Presunto e Queijo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 18,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Presunto e Queijo</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, presunto, queijo, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 18,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd10" data-name="Hot Carne" data-price="26.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Carne" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 26,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Carne</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, salsicha, filé de carne, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 26,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd11" data-name="Dogão da Angélica" data-price="48.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Dogão da Angélica" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 48,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Dogão da Angélica</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, 2 salsichas, hambúrguer de 120g, 2 ovos, milho, bacon, catchup, maionese e catupiry.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 48,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd12" data-name="Hot Burguer" data-price="19.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Burguer" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 19,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Burguer</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, hambúrguer, batata palha e salsicha.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 19,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd13" data-name="Hot Burguer Duplo" data-price="22.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Burguer Duplo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 22,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Burguer Duplo</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 2 hambúrgueres, batata palha, 2 salsichas, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 22,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd14" data-name="Hot Burguer Triplo" data-price="28.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Burguer Triplo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 28,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Burguer Triplo</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, 3 hambúrgueres, batata palha, 3 salsichas, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 28,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd15" data-name="Hot Frango" data-price="20.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Frango" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 20,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Frango</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, filé de frango, salsicha, cheddar, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 20,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd16" data-name="Hot Frango Especial" data-price="32.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Frango Especial" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 32,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Frango Especial</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, batata palha, filé de frango, salsicha, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 32,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="hot_dogs" data-id="hd17" data-name="Hot Frango Bacon" data-price="35.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1612392062798-2dbaa9f7e8a4?w=500&auto=format&fit=crop" alt="Hot Frango Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 35,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hot Frango Bacon</h3><p class="text-xs text-gray-500 mt-1">Pão, alface, tomate, filé de frango, salsicha, bacon, batata palha, catchup e maionese.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 35,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="macarrao_chapa" data-id="mc1" data-name="Brócolis e Bacon" data-price="40.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=500&auto=format&fit=crop" alt="Brócolis e Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 40,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Brócolis e Bacon</h3><p class="text-xs text-gray-500 mt-1">Espaguete, shoyu, brócolis, bacon, salsinha, cebolinha e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 40,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="macarrao_chapa" data-id="mc2" data-name="Frango Especial" data-price="43.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=500&auto=format&fit=crop" alt="Frango Especial" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 43,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Especial</h3><p class="text-xs text-gray-500 mt-1">Espaguete, shoyu, salsinha, cebolinha, frango desfiado, bacon, milho, catupiry e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 43,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="macarrao_chapa" data-id="mc3" data-name="Bacon e Milho" data-price="38.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=500&auto=format&fit=crop" alt="Bacon e Milho" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 38,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Bacon e Milho</h3><p class="text-xs text-gray-500 mt-1">Espaguete, shoyu, salsinha, cebolinha, bacon, milho e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 38,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="macarrao_chapa" data-id="mc4" data-name="Especial da Casa" data-price="47.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=500&auto=format&fit=crop" alt="Especial da Casa" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 47,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Especial da Casa</h3><p class="text-xs text-gray-500 mt-1">Espaguete, shoyu, salsinha, cebolinha, filé de frango, filé de carne, bacon, calabresa, catupiry e queijo.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 47,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz1" data-name="Calabresa" data-price="73.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Calabresa" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 73,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Calabresa</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, calabresa, cebola, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 73,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz2" data-name="Calabresa Catupiry" data-price="81.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Calabresa Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 81,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Calabresa Catupiry</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, calabresa, catupiry, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 81,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz3" data-name="Baiana" data-price="82.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Baiana" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 82,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Baiana</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, calabresa, cebola, azeitona, orégano, pimenta calabresa e pimenta biquinho.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 82,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz4" data-name="Palmito" data-price="80.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Palmito" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 80,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Palmito</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, palmito, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 80,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz5" data-name="Lombo Acebolado" data-price="79.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Lombo Acebolado" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 79,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Lombo Acebolado</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, lombo canadense, cebola, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 79,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz6" data-name="Lombo Catupiry" data-price="87.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Lombo Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 87,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Lombo Catupiry</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, lombo canadense, catupiry, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 87,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz7" data-name="Palmito Catupiry" data-price="90.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Palmito Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 90,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Palmito Catupiry</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, palmito, catupiry, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 90,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz8" data-name="Marguerita" data-price="76.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Marguerita" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 76,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Marguerita</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, tomate, manjericão, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 76,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz9" data-name="Frango Catupiry" data-price="84.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Frango Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 84,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Catupiry</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, frango desfiado, catupiry, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 84,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz10" data-name="Frango Cheddar" data-price="90.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Frango Cheddar" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 90,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Cheddar</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, frango desfiado, cheddar, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 90,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz11" data-name="Frango Especial" data-price="92.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Frango Especial" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 92,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Frango Especial</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, frango desfiado, catupiry, azeitona, orégano, milho e bacon.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 92,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz12" data-name="Atum Acebolado" data-price="81.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Atum Acebolado" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 81,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Atum Acebolado</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, atum, cebola, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 81,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz13" data-name="Atum Catupiry" data-price="90.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Atum Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 90,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Atum Catupiry</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, atum, catupiry, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 90,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz14" data-name="L.B.B" data-price="82.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="L.B.B" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 82,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">L.B.B</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, lombo, bacon, banana, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 82,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz15" data-name="Brócolis" data-price="83.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Brócolis" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 83,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Brócolis</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, brócolis, alho, bacon, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 83,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz16" data-name="Muçarela" data-price="76.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Muçarela" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 76,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Muçarela</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, tomate, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 76,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz17" data-name="Presunto e Queijo" data-price="79.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Presunto e Queijo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 79,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Presunto e Queijo</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, presunto, tomate, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 79,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz18" data-name="3 Queijos" data-price="82.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="3 Queijos" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 82,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">3 Queijos</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, provolone, catupiry, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 82,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz19" data-name="4 Queijos" data-price="87.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="4 Queijos" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 87,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">4 Queijos</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, provolone, catupiry, gorgonzola, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 87,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz20" data-name="5 Queijos" data-price="92.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="5 Queijos" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 92,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">5 Queijos</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, provolone, catupiry, gorgonzola, parmesão, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 92,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz21" data-name="Portuguesa" data-price="83.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Portuguesa" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 83,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Portuguesa</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, presunto, ervilha, palmito, ovo, cebola, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 83,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz22" data-name="Italiana" data-price="84.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Italiana" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 84,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Italiana</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, milho, palmito, ovo, cebola, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 84,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz23" data-name="4 Carnes" data-price="83.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="4 Carnes" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 83,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">4 Carnes</h3><p class="text-xs text-gray-500 mt-1">Pomarola, presunto, lombo, bacon, calabresa, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 83,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz24" data-name="À Moda da Casa" data-price="90.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="À Moda da Casa" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 90,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">À Moda da Casa</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, catupiry, bacon, milho, gorgonzola, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 90,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz25" data-name="Catupiry com Milho" data-price="83.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Catupiry com Milho" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 83,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Catupiry com Milho</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, catupiry, milho, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 83,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz26" data-name="Filé Mignon" data-price="93.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Filé Mignon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 93,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Filé Mignon</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, filé mignon, catupiry, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 93,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas" data-id="pz27" data-name="Bacon Catupiry" data-price="88.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Bacon Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 88,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Bacon Catupiry</h3><p class="text-xs text-gray-500 mt-1">Pomarola, muçarela, bacon, catupiry, azeitona e orégano.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 88,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas_doces" data-id="pd1" data-name="Confete" data-price="70.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Confete" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 70,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Confete</h3><p class="text-xs text-gray-500 mt-1">Chocolate ao leite e confete.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 70,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas_doces" data-id="pd2" data-name="Brigadeiro" data-price="70.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Brigadeiro" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 70,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Brigadeiro</h3><p class="text-xs text-gray-500 mt-1">Chocolate ao leite e granulado.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 70,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="pizzas_doces" data-id="pd3" data-name="Chocolate com Banana" data-price="70.00" data-is-pizza="true">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&auto=format&fit=crop" alt="Chocolate com Banana" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 70,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Chocolate com Banana</h3><p class="text-xs text-gray-500 mt-1">Chocolate ao leite, banana e canela.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 70,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fritas" data-id="fr1" data-name="Fritas" data-price="30.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Fritas" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 30,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Fritas</h3><p class="text-xs text-gray-500 mt-1">520g de batata.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 30,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fritas" data-id="fr2" data-name="Fritas com Catupiry" data-price="45.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Fritas com Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 45,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Fritas com Catupiry</h3><p class="text-xs text-gray-500 mt-1">520g de batata.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 45,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fritas" data-id="fr3" data-name="Fritas com Bacon" data-price="50.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Fritas com Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 50,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Fritas com Bacon</h3><p class="text-xs text-gray-500 mt-1">520g de batata.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 50,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fritas" data-id="fr4" data-name="Fritas com Queijo" data-price="50.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Fritas com Queijo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 50,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Fritas com Queijo</h3><p class="text-xs text-gray-500 mt-1">520g de batata.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 50,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fritas" data-id="fr5" data-name="Fritas com Bacon e Catupiry" data-price="62.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Fritas com Bacon e Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 62,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Fritas com Bacon e Catupiry</h3><p class="text-xs text-gray-500 mt-1">520g de batata.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 62,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fritas" data-id="fr6" data-name="Fritas com Bacon e Cheddar" data-price="70.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Fritas com Bacon e Cheddar" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 70,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Fritas com Bacon e Cheddar</h3><p class="text-xs text-gray-500 mt-1">520g de batata.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 70,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fritas" data-id="fr7" data-name="Fritas Turbo" data-price="99.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Fritas Turbo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 99,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Fritas Turbo</h3><p class="text-xs text-gray-500 mt-1">Serve de 3 a 4 pessoas. Filé de frango, filé de carne, bacon, queijo, cheddar e catupiry.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 99,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="porcoes_quentes" data-id="pq1" data-name="Calabresa Acebolada" data-price="60.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Calabresa Acebolada" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 60,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Calabresa Acebolada</h3><p class="text-xs text-gray-500 mt-1">Alface, tomate, calabresa, cebola, pão, molho e azeitona.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 60,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="porcoes_quentes" data-id="pq2" data-name="Contra-filé na Tábua" data-price="110.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Contra-filé na Tábua" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 110,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Contra-filé na Tábua</h3><p class="text-xs text-gray-500 mt-1">Alface, tomate, contra-filé, cebola, bacon, fritas, pão e molho.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 110,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="porcoes_quentes" data-id="pq3" data-name="Filé de Frango na Tábua" data-price="82.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Filé de Frango na Tábua" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 82,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Filé de Frango na Tábua</h3><p class="text-xs text-gray-500 mt-1">Alface, tomate, filé de frango, bacon, catupiry, batata frita, cebola, pão e molho.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 82,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="porcoes_quentes" data-id="pq4" data-name="Mista na Tábua" data-price="120.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop" alt="Mista na Tábua" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 120,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Mista na Tábua</h3><p class="text-xs text-gray-500 mt-1">Alface, tomate, filé de frango, contra-filé, cebola, bacon, calabresa, fritas, pão e molho.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 120,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad1" data-name="Batata Palha" data-price="3.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Batata Palha" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 3,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Batata Palha</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 3,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad2" data-name="Cebola" data-price="3.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Cebola" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 3,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Cebola</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 3,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad3" data-name="Salsicha" data-price="2.50">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Salsicha" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 2,50</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Salsicha</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 2,50</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad4" data-name="Hambúrguer" data-price="6.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Hambúrguer" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 6,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Hambúrguer</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 6,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad5" data-name="Milho" data-price="5.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Milho" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 5,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Milho</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 5,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad6" data-name="Filé de Frango" data-price="8.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Filé de Frango" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 8,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Filé de Frango</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 8,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad7" data-name="Catupiry" data-price="8.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Catupiry" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 8,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Catupiry</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 8,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad8" data-name="Contra-filé" data-price="13.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Contra-filé" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 13,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Contra-filé</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 13,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad9" data-name="Chedder" data-price="9.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Cheddar" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 9,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Chedder</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 9,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad10" data-name="Bacon" data-price="6.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Bacon" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 6,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Bacon</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 6,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad11" data-name="Calabresa" data-price="4.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Calabresa" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 4,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Calabresa</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 4,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="adicionais" data-id="ad12" data-name="Ovo" data-price="2.50">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&auto=format&fit=crop" alt="Ovo" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 2,50</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Ovo</h3><p class="text-xs text-gray-500 mt-1">Adicional.</p></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 2,50</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb1" data-name="Guaraná 1L" data-price="10.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Guaraná 1L" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 10,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Guaraná 1L</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 10,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb2" data-name="Coca-Cola 2L" data-price="16.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Coca-Cola 2L" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 16,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Coca-Cola 2L</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 16,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb3" data-name="Coca-Cola 350ml" data-price="7.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Coca-Cola 350ml" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 7,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Coca-Cola 350ml</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 7,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb4" data-name="Fanta, Sprite ou Guaraná 2L" data-price="16.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Fanta, Sprite ou Guaraná 2L" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 16,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Fanta, Sprite ou Guaraná 2L</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 16,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb5" data-name="Coca-Cola 1L Descartável" data-price="13.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Coca-Cola 1L Descartável" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 13,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Coca-Cola 1L Descartável</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 13,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb6" data-name="Coca-Cola 1L Vidro" data-price="12.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Coca-Cola 1L Vidro" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 12,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Coca-Cola 1L Vidro</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 12,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb7" data-name="Coca-Cola 600ml" data-price="11.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Coca-Cola 600ml" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 11,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Coca-Cola 600ml</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 11,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb8" data-name="Água com Gás" data-price="4.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Água com Gás" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 4,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Água com Gás</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 4,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb9" data-name="Água" data-price="3.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Água" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 3,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Água</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 3,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb10" data-name="Poty 2L" data-price="12.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Poty 2L" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 12,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Poty 2L</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 12,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb11" data-name="Limoneto 500ml" data-price="9.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Limoneto 500ml" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 9,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Limoneto 500ml</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 9,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="bebidas" data-id="bb12" data-name="Água Tônica" data-price="7.00">
+        <div class="relative h-40 overflow-hidden bg-gray-100"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&auto=format&fit=crop" alt="Água Tônica" class="product-img w-full h-full object-cover" loading="lazy" />
+          <span class="absolute top-2 right-2 bg-red-700 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow">R$ 7,00</span>
+        </div>
+        <div class="card-content p-4 flex-1 flex flex-col justify-between space-y-3">
+          <div><h3 class="font-bold text-gray-800 text-base">Água Tônica</h3></div>
+          <div class="price font-extrabold text-red-700 text-base">R$ 7,00</div>
+          <button onclick="addCardToCart(this)" class="btn-add w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-xl text-xs transition flex items-center justify-center space-x-1"><i class="fa-solid fa-plus"></i> <span>Adicionar ao Carrinho</span></button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL BORDAS E ADICIONAIS PIZZA -->
+  <div id="pizza-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closePizzaModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <i class="fa-solid fa-xmark text-2xl"></i>
+      </button>
+      <h3 id="pizza-modal-title" class="text-xl font-bold text-gray-800 mb-1">Personalizar Pizza</h3>
+      <p class="text-xs text-gray-500 mb-4">Deseja adicionar borda recheada ou ingredientes extras?</p>
+      <div id="pizza-extras-list" class="space-y-2 max-h-60 overflow-y-auto mb-6 pr-1"></div>
+      <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+        <div>
+          <span class="text-xs text-gray-500 block">Total do Item:</span>
+          <span id="pizza-modal-total" class="text-xl font-extrabold text-red-700">R$ 0,00</span>
+        </div>
+        <button onclick="confirmPizzaAddition()" class="bg-red-700 hover:bg-red-800 text-white font-bold px-6 py-2.5 rounded-xl transition shadow text-xs">
+          Adicionar ao Carrinho
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARRINHO LATERAL DE COMPRAS -->
+  <div id="cart-drawer" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-end hidden">
+    <div class="bg-white w-full max-w-md h-full flex flex-col justify-between shadow-2xl">
+      <div class="bg-red-700 text-white p-4 flex items-center justify-between shadow">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-cart-shopping text-xl text-yellow-400"></i>
+          <h2 class="text-lg font-bold">Seu Pedido</h2>
+        </div>
+        <button onclick="toggleCart()" class="text-white hover:text-yellow-300">
+          <i class="fa-solid fa-xmark text-2xl"></i>
+        </button>
+      </div>
+
+      <div id="cart-items" class="p-4 overflow-y-auto flex-1 space-y-4"></div>
+
+      <div class="p-4 bg-gray-50 border-t border-gray-200 space-y-4">
+        <div class="space-y-1">
+          <label for="customer-name" class="block text-xs font-bold text-gray-700">Nome do Cliente:</label>
+          <input type="text" id="customer-name" autocomplete="name" placeholder="Digite seu nome" class="w-full text-xs p-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Tipo de Entrega:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setDeliveryType('delivery')" id="btn-type-delivery" class="py-2 text-xs font-bold rounded-lg border border-red-700 bg-red-700 text-white flex items-center justify-center space-x-1">
+              <i class="fa-solid fa-motorcycle"></i>
+              <span>Entrega (+R$5)</span>
+            </button>
+            <button onclick="setDeliveryType('pickup')" id="btn-type-pickup" class="py-2 text-xs font-bold rounded-lg border border-gray-300 text-gray-700 flex items-center justify-center space-x-1">
+              <i class="fa-solid fa-store"></i>
+              <span>Retirada</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="address-field" class="space-y-1">
+          <label class="block text-xs font-bold text-gray-700">Endereço de Entrega:</label>
+          <input type="text" id="delivery-address" placeholder="Rua, número, bairro e referência..." class="w-full text-xs p-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Forma de Pagamento:</label>
+          <select id="payment-method" onchange="handlePaymentChange()" class="w-full text-xs p-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 bg-white">
+            <option value="pix">PIX</option>
+            <option value="cartao">Cartão de Débito / Crédito</option>
+            <option value="dinheiro">Dinheiro</option>
+          </select>
+        </div>
+
+        <div id="change-field" class="hidden space-y-1">
+          <label class="block text-xs font-bold text-gray-700">Troco para quanto?</label>
+          <input type="number" id="change-value" placeholder="Ex: 100" class="w-full text-xs p-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600" />
+        </div>
+
+        <div class="space-y-1 pt-2 border-t border-gray-200 text-xs">
+          <div class="flex justify-between text-gray-600">
+            <span>Subtotal:</span>
+            <span id="subtotal-val">R$ 0,00</span>
+          </div>
+          <div class="flex justify-between text-gray-600">
+            <span>Taxa de Entrega:</span>
+            <span id="delivery-fee-val">R$ 5,00</span>
+          </div>
+          <div class="flex justify-between text-base font-extrabold text-red-700 pt-1">
+            <span>Total:</span>
+            <span id="total-val">R$ 0,00</span>
+          </div>
+        </div>
+
+        <button onclick="finishOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-3 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-sm">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span>Finalizar Pedido no WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ INSTITUCIONAL -->
+  <footer class="bg-gray-900 text-gray-300 py-10 mt-12 border-t-4 border-yellow-400">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-white text-lg font-extrabold uppercase tracking-wider mb-3">Angélica Lanches</h3>
+        <p class="text-xs text-gray-400 leading-relaxed mb-4">
+          Qualidade e sabor sempre juntos! Lanches recheados, pizzas crocantes, porções e bebidas trincando.
+        </p>
+      </div>
+      <div>
+        <h4 class="text-white text-sm font-bold uppercase mb-3">Endereço & Contato</h4>
+        <ul class="text-xs space-y-2">
+          <li class="flex items-start space-x-2">
+            <i class="fa-solid fa-location-dot text-yellow-400 mt-0.5"></i>
+            <span>Rua Manoel Walter Porto, 400 (ao lado do açougue do Marquinhos)</span>
+          </li>
+          <li class="flex items-center space-x-2">
+            <i class="fa-brands fa-whatsapp text-green-400 text-sm"></i>
+            <span>(17) 99223-0627</span>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white text-sm font-bold uppercase mb-3">Formas de Pagamento</h4>
+        <div class="flex items-center space-x-3 text-2xl text-yellow-400">
+          <i class="fa-brands fa-pix"></i>
+          <i class="fa-solid fa-credit-card"></i>
+          <i class="fa-solid fa-money-bill-wave"></i>
+        </div>
+        <p class="text-xs text-gray-400 mt-2">
+          Aceitamos cartões de crédito e débito, PIX e dinheiro.
+        </p>
+      </div>
+    </div>
+    <div class="text-center text-xs text-gray-500 mt-8 pt-4 border-t border-gray-800">
+      &copy; Angélica Lanches - Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <!-- LÓGICA JAVASCRIPT QUE LÊ AS DIVS DO HTML -->
+  <script>
+    let currentCategory = 'promocoes';
+    let cart = [];
+    let deliveryType = 'delivery';
+    let selectedPizza = null;
+    let selectedPizzaExtras = [];
+
+    const categoryTitles = {
+      promocoes: "🔥 Promoções Imbatíveis",
+      combos: "🍔 Combos Especiais",
+      lanches_hamburguer: "🍔 Lanches de Hambúrguer",
+      lanches_frango: "🍗 Lanches de Frango",
+      saladinhas: "🥬 Saladinhas",
+      lanches_file: "🥩 Lanches de Filé",
+      mini_lanches: "🍔 Mini Lanches",
+      adicionais: "➕ Adicionais",
+      pizzas: "🍕 Pizzas Grandes",
+      pizzas_doces: "🍫 Pizzas Doces",
+      porcoes_quentes: "🥩 Porções Quentes",
+      fritas: "🍟 Porções de Fritas",
+      hot_dogs: "🌭 Hot Dogs Especiais",
+      macarrao_chapa: "🍝 Macarrão na Chapa",
+      bebidas: "🥤 Bebidas"
+    };
+
+    const pizzaExtrasOptions = [
+      { id: "b1", name: "Borda Catupiry", price: 14.00 },
+      { id: "b2", name: "Borda Cheddar", price: 17.00 },
+      { id: "a1", name: "Adicional Bacon", price: 10.00 },
+      { id: "a2", name: "Adicional Calabresa", price: 8.00 },
+      { id: "a3", name: "Adicional Milho", price: 7.00 },
+      { id: "a4", name: "Adicional Cebola", price: 6.00 }
+    ];
+
+    window.onload = () => {
+      selectCategory('promocoes');
+    };
+
+    // NAVEGAÇÃO DE CATEGORIAS
+    function selectCategory(catKey) {
+      currentCategory = catKey;
+
+      document.querySelectorAll('.category-tab').forEach(btn => {
+        btn.classList.remove('bg-yellow-400', 'text-red-900', 'font-bold', 'shadow');
+        btn.classList.add('text-white', 'hover:bg-red-700');
+      });
+
+      const activeTab = document.getElementById(`tab-${catKey}`);
+      if (activeTab) {
+        activeTab.classList.remove('text-white', 'hover:bg-red-700');
+        activeTab.classList.add('bg-yellow-400', 'text-red-900', 'font-bold', 'shadow');
+      }
+
+      document.getElementById('category-title').innerText = categoryTitles[catKey] || 'Cardápio';
+
+      // Filtra as divs .card do HTML
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        if (card.dataset.category === catKey) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // CAPTURA DADOS DO CARD CLICADO
+    function addCardToCart(btn) {
+      const card = btn.closest('.card');
+      const item = {
+        id: card.dataset.id,
+        name: card.dataset.name,
+        price: parseFloat(card.dataset.price),
+        isPizza: card.dataset.isPizza === "true"
+      };
+
+      if (item.isPizza) {
+        openPizzaModal(item);
+      } else {
+        addToCart(item, []);
+      }
+    }
+
+    // MODAL PIZZA
+    function openPizzaModal(product) {
+      selectedPizza = product;
+      selectedPizzaExtras = [];
+      document.getElementById('pizza-modal-title').innerText = product.name;
+
+      const listContainer = document.getElementById('pizza-extras-list');
+      listContainer.innerHTML = pizzaExtrasOptions.map(extra => `
+        <label class="flex items-center justify-between p-2.5 border rounded-xl hover:bg-gray-50 cursor-pointer text-xs">
+          <div class="flex items-center space-x-2">
+            <input type="checkbox" onchange="togglePizzaExtra('${extra.id}')" class="rounded text-red-600 focus:ring-red-500 w-4 h-4">
+            <span class="font-medium text-gray-700">${extra.name}</span>
+          </div>
+          <span class="font-bold text-red-700">+ R$ ${extra.price.toFixed(2).replace('.', ',')}</span>
+        </label>
+      `).join('');
+
+      updatePizzaModalTotal();
+      document.getElementById('pizza-modal').classList.remove('hidden');
+    }
+
+    function closePizzaModal() {
+      document.getElementById('pizza-modal').classList.add('hidden');
+      selectedPizza = null;
+      selectedPizzaExtras = [];
+    }
+
+    function togglePizzaExtra(extraId) {
+      const idx = selectedPizzaExtras.indexOf(extraId);
+      if (idx > -1) selectedPizzaExtras.splice(idx, 1);
+      else selectedPizzaExtras.push(extraId);
+      updatePizzaModalTotal();
+    }
+
+    function updatePizzaModalTotal() {
+      if (!selectedPizza) return;
+      let total = selectedPizza.price;
+      selectedPizzaExtras.forEach(id => {
+        const ext = pizzaExtrasOptions.find(e => e.id === id);
+        if (ext) total += ext.price;
+      });
+      document.getElementById('pizza-modal-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    function confirmPizzaAddition() {
+      if (!selectedPizza) return;
+      const extrasDetails = selectedPizzaExtras.map(id => pizzaExtrasOptions.find(e => e.id === id));
+      addToCart(selectedPizza, extrasDetails);
+      closePizzaModal();
+    }
+
+    // CARRINHO
+    function addToCart(product, extras = []) {
+      const extraTotal = extras.reduce((sum, e) => sum + e.price, 0);
+      const itemUnitPrice = product.price + extraTotal;
+      const extrasIds = extras.map(e => e.id).sort().join('-');
+      const cartKey = `${product.id}_${extrasIds}`;
+
+      const existingIndex = cart.findIndex(c => c.cartKey === cartKey);
+      if (existingIndex > -1) {
+        cart[existingIndex].quantity += 1;
+      } else {
+        cart.push({ cartKey, product, extras, unitPrice: itemUnitPrice, quantity: 1 });
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartBadge = document.getElementById('cart-badge');
+      const cartItemsContainer = document.getElementById('cart-items');
+      const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartBadge.innerText = totalCount;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="text-center text-gray-400 py-12">
+            <i class="fa-solid fa-basket-shopping text-4xl mb-2"></i>
+            <p class="text-sm font-medium">Seu carrinho está vazio.</p>
+          </div>
+        `;
+      } else {
+        cartItemsContainer.innerHTML = cart.map((item, index) => {
+          const extrasText = item.extras.length > 0 
+            ? `<div class="text-[10px] text-gray-500 font-normal">+ ${item.extras.map(e => e.name).join(', ')}</div>` 
+            : '';
+
+          return `
+            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-200">
+              <div class="flex-1 pr-2">
+                <h4 class="font-bold text-xs text-gray-800">${item.product.name}</h4>
+                ${extrasText}
+                <span class="text-xs font-bold text-red-700 block mt-0.5">
+                  R$ ${(item.unitPrice * item.quantity).toFixed(2).replace('.', ',')}
+                </span>
+              </div>
+              <div class="flex items-center space-x-2 bg-white px-2 py-1 rounded-lg border">
+                <button onclick="changeQty(${index}, -1)" class="text-gray-500 hover:text-red-700 text-xs px-1 font-bold">-</button>
+                <span class="text-xs font-bold text-gray-800">${item.quantity}</span>
+                <button onclick="changeQty(${index}, 1)" class="text-gray-500 hover:text-red-700 text-xs px-1 font-bold">+</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      calculateTotals();
+    }
+
+    function changeQty(index, delta) {
+      cart[index].quantity += delta;
+      if (cart[index].quantity <= 0) cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function setDeliveryType(type) {
+      deliveryType = type;
+      const btnDelivery = document.getElementById('btn-type-delivery');
+      const btnPickup = document.getElementById('btn-type-pickup');
+      const addressField = document.getElementById('address-field');
+
+      if (type === 'delivery') {
+        btnDelivery.className = "py-2 text-xs font-bold rounded-lg border border-red-700 bg-red-700 text-white flex items-center justify-center space-x-1";
+        btnPickup.className = "py-2 text-xs font-bold rounded-lg border border-gray-300 text-gray-700 flex items-center justify-center space-x-1";
+        addressField.classList.remove('hidden');
+      } else {
+        btnPickup.className = "py-2 text-xs font-bold rounded-lg border border-red-700 bg-red-700 text-white flex items-center justify-center space-x-1";
+        btnDelivery.className = "py-2 text-xs font-bold rounded-lg border border-gray-300 text-gray-700 flex items-center justify-center space-x-1";
+        addressField.classList.add('hidden');
+      }
+      calculateTotals();
+    }
+
+    function handlePaymentChange() {
+      const method = document.getElementById('payment-method').value;
+      const changeField = document.getElementById('change-field');
+      if (method === 'dinheiro') changeField.classList.remove('hidden');
+      else changeField.classList.add('hidden');
+    }
+
+    function calculateTotals() {
+      const subtotal = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+      const deliveryFee = deliveryType === 'delivery' && cart.length > 0 ? 5.00 : 0.00;
+      const total = subtotal + deliveryFee;
+
+      document.getElementById('subtotal-val').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+      document.getElementById('delivery-fee-val').innerText = `R$ ${deliveryFee.toFixed(2).replace('.', ',')}`;
+      document.getElementById('total-val').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    function toggleCart() {
+      document.getElementById('cart-drawer').classList.toggle('hidden');
+    }
+
+    function finishOrder() {
+      if (cart.length === 0) {
+        alert("Seu carrinho está vazio! Adicione itens antes de finalizar.");
+        return;
+      }
+
+      const customerName = document.getElementById('customer-name').value.trim();
+      const paymentMethod = document.getElementById('payment-method').value;
+      const address = document.getElementById('delivery-address').value.trim();
+      const changeVal = document.getElementById('change-value').value;
+
+      if (!customerName) {
+        alert("Por favor, digite o nome do cliente.");
+        document.getElementById('customer-name').focus();
+        return;
+      }
+
+      if (deliveryType === 'delivery' && !address) {
+        alert("Por favor, digite o endereço completo de entrega.");
+        document.getElementById('delivery-address').focus();
+        return;
+      }
+
+      let orderText = `*NOVO PEDIDO - ANGÉLICA LANCHES*\n*Cliente:* ${customerName}\n--------------------------------\n`;
+
+      cart.forEach(item => {
+        orderText += `• ${item.quantity}x ${item.product.name}\n`;
+        if (item.extras.length > 0) {
+          orderText += `  Adicionais: ${item.extras.map(e => e.name).join(', ')}\n`;
+        }
+        orderText += `  Valor: R$ ${(item.unitPrice * item.quantity).toFixed(2).replace('.', ',')}\n\n`;
+      });
+
+      const subtotal = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+      const deliveryFee = deliveryType === 'delivery' ? 5.00 : 0.00;
+      const total = subtotal + deliveryFee;
+
+      orderText += `--------------------------------\n`;
+      orderText += `*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+      orderText += `*Tipo:* ${deliveryType === 'delivery' ? 'Entrega (R$ 5,00)' : 'Retirada no Balcão'}\n`;
+      if (deliveryType === 'delivery') {
+        orderText += `*Endereço:* ${address}\n`;
+      }
+      orderText += `*Forma de Pagamento:* ${paymentMethod.toUpperCase()}\n`;
+
+      if (paymentMethod === 'dinheiro' && changeVal) {
+        orderText += `*Troco para:* R$ ${parseFloat(changeVal).toFixed(2).replace('.', ',')}\n`;
+      }
+
+      orderText += `--------------------------------\n*TOTAL DO PEDIDO:* R$ ${total.toFixed(2).replace('.', ',')}\n`;
+
+      const phone = "5517992230627";
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(orderText)}`, '_blank');
+    }
+  </script>
+</body>
+</html>
